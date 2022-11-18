@@ -268,10 +268,16 @@ namespace WebApiMascota2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("VeterinariaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
 
                     b.HasIndex("VeterinariaId");
 
@@ -371,11 +377,19 @@ namespace WebApiMascota2.Migrations
 
             modelBuilder.Entity("WebApiMascota2.Entidades.Servicio", b =>
                 {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebApiMascota2.Entidades.Veterinaria", "Veterinaria")
                         .WithMany("Servicio")
                         .HasForeignKey("VeterinariaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Usuario");
 
                     b.Navigation("Veterinaria");
                 });

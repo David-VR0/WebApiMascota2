@@ -10,6 +10,9 @@ namespace WebApiMascota2.Entidades
         public int VeterinariaId { get; set; }
 
         public Veterinaria Veterinaria { get; set; }
+        public string UsuarioId { get; set; }
+
+        public IdentityUser Usuario { get; set; }
 
     }
 }

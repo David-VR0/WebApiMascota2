@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WebApiMascota2.Migrations
 {
-    public partial class Initial : Migration
+    public partial class Cuentas : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -213,11 +213,18 @@ namespace WebApiMascota2.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Consulta = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VeterinariaId = table.Column<int>(type: "int", nullable: false)
+                    VeterinariaId = table.Column<int>(type: "int", nullable: false),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Servicio", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Servicio_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Servicio_Veterinaria_VeterinariaId",
                         column: x => x.VeterinariaId,
@@ -271,6 +278,11 @@ namespace WebApiMascota2.Migrations
                 column: "VeterinariaId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Servicio_UsuarioId",
+                table: "Servicio",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Servicio_VeterinariaId",
                 table: "Servicio",
                 column: "VeterinariaId");
@@ -303,10 +315,10 @@ namespace WebApiMascota2.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Mascota");
 
             migrationBuilder.DropTable(
-                name: "Mascota");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Veterinaria");

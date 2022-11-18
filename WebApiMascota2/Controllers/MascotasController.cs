@@ -9,6 +9,7 @@ namespace WebApiMascota2.Controllers
 {
     [ApiController]
     [Route("mascotas")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Policy = "EsAdmin")]
     public class MascotasController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;

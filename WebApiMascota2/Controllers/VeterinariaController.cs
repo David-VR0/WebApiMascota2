@@ -20,7 +20,7 @@ namespace WebApiMascota2.Controllers
         }
 
         [HttpGet]
-        [HttpGet("/listadoClase")]
+        [HttpGet("/listadoVeterinaria")]
         public async Task<ActionResult<List<Veterinaria>>> GetAll()
         {
             return await dbContext.Veterinaria.ToListAsync();
@@ -59,12 +59,12 @@ namespace WebApiMascota2.Controllers
 
             if (veterinariaCreacionDTO.MascotasIds.Count != mascotasIds.Count)
             {
-                return BadRequest("No existe uno de los alumnos enviados");
+                return BadRequest("No existe uno de las mascotas enviados");
             }
 
             var veterinaria = mapper.Map<Veterinaria>(veterinariaCreacionDTO);
 
-            OrdenarPorAlumnos(veterinaria);
+            
 
             dbContext.Add(veterinaria);
             await dbContext.SaveChangesAsync();

@@ -11,14 +11,13 @@ namespace WebApiMascota2.Controllers
 {
     [ApiController]
     [Route("veterinarias/{veterinariaId:int}/servicio")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ServiciosController : ControllerBase
     {
         private readonly ApplicationDbContext dbContext;
         private readonly IMapper mapper;
         private readonly UserManager<IdentityUser> userManager;
-
-        public ServiciosController(ApplicationDbContext dbContext, IMapper mapper,
-            UserManager<IdentityUser> userManager)
+        public ServiciosController(ApplicationDbContext dbContext, IMapper mapper,UserManager<IdentityUser> userManager)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -39,7 +38,7 @@ namespace WebApiMascota2.Controllers
             return mapper.Map<List<ServicioDTO>>(servicio);
         }
 
-        [HttpGet("{id:int}", Name = "obtenerCurso")]
+        [HttpGet("{id:int}", Name = "obtenerServicio")]
         public async Task<ActionResult<ServicioDTO>> GetById(int id)
         {
             var servicio = await dbContext.Servicio.FirstOrDefaultAsync(servicioDB => servicioDB.Id == id);
@@ -56,6 +55,7 @@ namespace WebApiMascota2.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Post(int veterinariaId, ServicioCreacionDTO servicioCreacionDTO)
         {
+
             var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
 
             var email = emailClaim.Value;
@@ -63,20 +63,22 @@ namespace WebApiMascota2.Controllers
             var usuario = await userManager.FindByEmailAsync(email);
             var usuarioId = usuario.Id;
 
-            var existeVet = await dbContext.Servicio.AnyAsync(vetDB => vetDB.Id == veterinariaId);
+            var existeVet = await dbContext.Veterinaria.AnyAsync(vetDB => vetDB.Id == veterinariaId);
             if (!existeVet)
             {
                 return NotFound();
             }
-
+            
             var servicio = mapper.Map<Servicio>(servicioCreacionDTO);
+            
             servicio.VeterinariaId = veterinariaId;
+            servicio.UsuarioId = usuarioId;
             dbContext.Add(servicio);
             await dbContext.SaveChangesAsync();
 
-            var cursoDTO = mapper.Map<ServicioDTO>(servicio);
+            var servicioDTO = mapper.Map<ServicioDTO>(servicio);
 
-            return CreatedAtRoute("obtenerServicio", new { id = servicio.Id, claseId = veterinariaId }, cursoDTO);
+            return CreatedAtRoute("obtenerServicio", new { id = servicio.Id, veterinariaId = veterinariaId }, servicioDTO);
         }
 
         [HttpPut("{id:int}")]
@@ -93,11 +95,16 @@ namespace WebApiMascota2.Controllers
             {
                 return NotFound();
             }
+            var emailClaim = HttpContext.User.Claims.Where(claim => claim.Type == "email").FirstOrDefault();
 
+            var email = emailClaim.Value;
+
+            var usuario = await userManager.FindByEmailAsync(email);
+            var usuarioId = usuario.Id;
             var servicio = mapper.Map<Servicio>(servicioCreacionDTO);
             servicio.Id = id;
             servicio.VeterinariaId = veterinariaId;
-
+            servicio.UsuarioId = usuarioId;
             dbContext.Update(servicio);
             await dbContext.SaveChangesAsync();
             return NoContent();

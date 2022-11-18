@@ -16,6 +16,7 @@ namespace WebApiMascota2.Utilidades
             CreateMap<Veterinaria, VeterinariaDTO>();
             CreateMap<Veterinaria, VeterinariaDTOConMascotas>()
                 .ForMember(veterinariaDTO => veterinariaDTO.Mascotas, opciones => opciones.MapFrom(MapVeterinariasDTOMascotas));
+            CreateMap<VeterinariaPatchDTO, Veterinaria>().ReverseMap();
             CreateMap<ServicioCreacionDTO, Servicio>();
             CreateMap<Servicio, ServicioDTO>();
         }

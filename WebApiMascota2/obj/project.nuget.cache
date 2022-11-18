@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "fWy5M7CyXAjLb1ERUuAC9uLKC7xwOcNLbHhXfGooQaKtTEe/Uc4Raqin0nMDsSFj/YUzT0K0t3WSedGOz6KVhA==",
+  "dgSpecHash": "weN8yMZHtxj9v3T8BEEWX5Y49+E/tPV7LWAUyvZVakh05kUnj0hEkclpKLRQs/pxGRprKoM+XTEhrpBuMGFHmw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\david\\Documents\\ProyectosNet\\WebApiMascota2\\githu\\git2\\WebApiMascota2\\WebApiMascota2\\WebApiMascota2.csproj",
+  "projectFilePath": "C:\\Users\\david\\Documents\\ProyectosNet\\WebApiMascota2\\githu\\git3\\WebApiMascota2\\WebApiMascota2\\WebApiMascota2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\david\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
     "C:\\Users\\david\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\8.1.1\\automapper.extensions.microsoft.dependencyinjection.8.1.1.nupkg.sha512",
